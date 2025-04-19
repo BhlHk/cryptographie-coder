@@ -1,0 +1,55 @@
+Tu es un développeur Python expert en Flask et en cryptographie. Crée une application web complète avec les spécifications suivantes :
+
+1. **Environnement et dépendances**  
+   - Utiliser Python 3.  
+   - Utiliser Flask pour le serveur web.  
+   - Utiliser PyCryptodome (ou une autre bibliothèque Python) pour implémenter AES, DES et RSA.  
+   - Fournir un `requirements.txt` pour installer les dépendances.
+
+2. **Structure du projet**  
+   - `app.py` : point d’entrée de l’application.  
+   - `templates/` : dossier pour les fichiers HTML (utiliser Jinja2).  
+   - `static/` : dossier pour les CSS et JS optionnels.
+
+3. **Fonctionnalités principales**  
+   - **Page d’accueil** (`GET /`) : formulaire qui permet de :
+     - Saisir un **message clair**.  
+     - Saisir une **clé** (pour AES et DES) ou laisser générer une paire de clés RSA.  
+     - Choisir l’**algorithme de chiffrement** parmi AES, DES, RSA.  
+     - Bouton “Chiffrer”.  
+   - **Route d’encrypt** (`POST /encrypt`) :  
+     - Récupère les données du formulaire.  
+     - Chiffre le message selon l’algorithme choisi.  
+     - Affiche le **texte chiffré** et, le cas échéant, la **clé publique/privée** pour RSA ou rappelle la clé symétrique.  
+   - **Page de décrypt** (`GET /decrypt`) : formulaire qui permet de :
+     - Saisir le **texte chiffré**.  
+     - Saisir la **clé** ou la **clé privée RSA**.  
+     - Bouton “Déchiffrer”.  
+   - **Route dedecrypt** (`POST /decrypt`) :  
+     - Déchiffre le texte fourni.  
+     - Affiche le **message clair**.
+
+4. **Détails d’implémentation**  
+   - Pour **AES**/DES :  
+     - Utiliser le mode CBC avec IV généré aléatoirement.  
+     - Encoder en base64 le résultat (texte chiffré + IV).  
+   - Pour **RSA** :  
+     - Générer une paire de clés 2048 bits si l’utilisateur ne fournit pas de clés.  
+     - Utiliser PKCS#1 OAEP pour le chiffrement/déchiffrement.  
+     - Afficher la clé publique (en base64) à copier/coller.
+   - Gérer les erreurs (clé invalide, format incorrect…).  
+   - Interface HTML simple, Bootstrap ou Bulma facultatif pour le style.
+
+5. **Exemple de routes et fonctions**  
+   - `def encrypt_aes(message, key): ...`  
+   - `def decrypt_aes(ciphertext_b64, key): ...`  
+   - `def encrypt_des(...)` / `decrypt_des(...)`  
+   - `def generate_rsa_keys(): ...`  
+   - `def encrypt_rsa(message, public_key): ...`  
+   - `def decrypt_rsa(ciphertext_b64, private_key): ...`
+
+6. **Instructions d’exécution**  
+   - Comment installer les dépendances (`pip install -r requirements.txt`).  
+   - Comment lancer le serveur (`python app.py`).  
+
+Rends tout le code prêt à l’emploi et bien commenté, avec des exemples de templates HTML pour les deux formulaires (encrypt et decrypt).  
