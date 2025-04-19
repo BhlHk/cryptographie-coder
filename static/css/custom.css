@@ -1,0 +1,73 @@
+/* Custom styles for Cryptography Tool */
+
+/* For pre tags in result page (keeping long keys and ciphertexts visible) */
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Add some spacing to cards */
+.card {
+    margin-bottom: 1.5rem;
+}
+
+/* Make textareas for keys more legible */
+textarea#key, textarea#ciphertext {
+    font-family: monospace;
+}
+
+/* Styling for generated key displays */
+.accordion pre {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    border-radius: 4px;
+}
+
+/* Helper for copy buttons */
+.btn .fa-copy {
+    margin-right: 0.25rem;
+}
+
+/* Make sure result text is readable */
+#resultText, #publicKeyText, #privateKeyText, #keyText {
+    font-family: monospace;
+    word-break: break-all;
+}
+
+/* Add some visual indication to the accordion items */
+.accordion-button:not(.collapsed) {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+
+/* Better visibility for alert messages */
+.alert {
+    margin-bottom: 1.5rem;
+}
+
+/* Improve readability of pre blocks */
+pre code {
+    display: block;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Ensure footer stays at bottom if content is short */
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1 0 auto;
+}
+
+footer {
+    flex-shrink: 0;
+    background-color: rgba(0, 0, 0, 0.05);
+}

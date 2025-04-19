@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Decrypt{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h2 class="mb-0">
+                    <i class="fas fa-unlock-alt me-2"></i>Decrypt Message
+                </h2>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('decrypt') }}" method="post">
+                    <div class="mb-3">
+                        <label for="ciphertext" class="form-label">Encrypted Text</label>
+                        <textarea class="form-control" id="ciphertext" name="ciphertext" rows="4" required 
+                                  placeholder="Paste the base64 encoded ciphertext here"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="algorithm" class="form-label">Decryption Algorithm</label>
+                        <select class="form-select" id="algorithm" name="algorithm" required>
+                            <option value="" selected disabled>Choose an algorithm</option>
+                            <option value="aes">AES (Advanced Encryption Standard)</option>
+                            <option value="des">DES (Data Encryption Standard)</option>
+                            <option value="rsa">RSA (Rivest–Shamir–Adleman)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3" id="decryptKeyGroup">
+                        <label for="key" class="form-label">Decryption Key</label>
+                        <textarea class="form-control" id="key" name="key" rows="4" required 
+                                  placeholder="Enter the decryption key"></textarea>
+                        <div class="form-text" id="decryptKeyHelp">
+                            <span id="aesDecryptHelp" style="display: none;">For AES: Enter the same key used for encryption</span>
+                            <span id="desDecryptHelp" style="display: none;">For DES: Enter the same key used for encryption</span>
+                            <span id="rsaDecryptHelp" style="display: none;">For RSA: Paste the private key (PEM format)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-unlock-alt me-1"></i>Decrypt
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card mt-4 shadow">
+            <div class="card-header bg-info text-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>Decryption Instructions
+                </h3>
+            </div>
+            <div class="card-body">
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">Paste the encrypted text</div>
+                            Ensure you include the entire base64 encoded ciphertext
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">Select the correct algorithm</div>
+                            Use the same algorithm that was used for encryption
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">Enter the appropriate key</div>
+                            For AES/DES: the same secret key<br>
+                            For RSA: the private key (must be the matching private key to the public key used for encryption)
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

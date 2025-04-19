@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}Encrypt{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">
+                    <i class="fas fa-lock me-2"></i>Encrypt Message
+                </h2>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('encrypt') }}" method="post">
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message to encrypt</label>
+                        <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="algorithm" class="form-label">Encryption Algorithm</label>
+                        <select class="form-select" id="algorithm" name="algorithm" required>
+                            <option value="" selected disabled>Choose an algorithm</option>
+                            <option value="aes">AES (Advanced Encryption Standard)</option>
+                            <option value="des">DES (Data Encryption Standard)</option>
+                            <option value="rsa">RSA (Rivest–Shamir–Adleman)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3" id="keyInputGroup">
+                        <label for="key" class="form-label">Encryption Key</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="key" name="key" 
+                                   placeholder="Enter key or leave empty for RSA to generate new keys">
+                            <button class="btn btn-outline-secondary" type="button" id="generateKeyBtn">
+                                <i class="fas fa-key me-1"></i>Generate
+                            </button>
+                        </div>
+                        <div class="form-text" id="keyHelp">
+                            <span id="aesKeyHelp" style="display: none;">For AES: 16, 24, or 32 characters for AES-128, AES-192, or AES-256</span>
+                            <span id="desKeyHelp" style="display: none;">For DES: 8 characters (will be padded/truncated if needed)</span>
+                            <span id="rsaKeyHelp" style="display: none;">For RSA: Leave empty to generate new key pair, or paste a public key</span>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-lock me-1"></i>Encrypt
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card mt-4 shadow">
+            <div class="card-header bg-info text-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>About the Encryption Methods
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="accordion" id="algorithmAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#aesInfo" aria-expanded="false" aria-controls="aesInfo">
+                                AES (Advanced Encryption Standard)
+                            </button>
+                        </h2>
+                        <div id="aesInfo" class="accordion-collapse collapse" data-bs-parent="#algorithmAccordion">
+                            <div class="accordion-body">
+                                <p>AES is a symmetric encryption algorithm widely used for securing sensitive data.</p>
+                                <ul>
+                                    <li>Uses CBC mode with random IV for added security</li>
+                                    <li>Supports key sizes of 128, 192, or 256 bits</li>
+                                    <li>Considered highly secure and is used by governments and organizations worldwide</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#desInfo" aria-expanded="false" aria-controls="desInfo">
+                                DES (Data Encryption Standard)
+                            </button>
+                        </h2>
+                        <div id="desInfo" class="accordion-collapse collapse" data-bs-parent="#algorithmAccordion">
+                            <div class="accordion-body">
+                                <p>DES is an older symmetric encryption algorithm.</p>
+                                <ul>
+                                    <li>Uses CBC mode with random IV</li>
+                                    <li>Fixed key size of 56 bits (8 bytes)</li>
+                                    <li>Note: DES is considered less secure by modern standards but included for educational purposes</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#rsaInfo" aria-expanded="false" aria-controls="rsaInfo">
+                                RSA (Rivest–Shamir–Adleman)
+                            </button>
+                        </h2>
+                        <div id="rsaInfo" class="accordion-collapse collapse" data-bs-parent="#algorithmAccordion">
+                            <div class="accordion-body">
+                                <p>RSA is an asymmetric encryption algorithm using public and private keys.</p>
+                                <ul>
+                                    <li>Uses 2048-bit key length for strong security</li>
+                                    <li>Implements PKCS#1 OAEP padding for secure encryption</li>
+                                    <li>Public key can be shared openly, private key must be kept secret</li>
+                                    <li>Note: RSA has message size limitations based on key size</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
