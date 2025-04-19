@@ -14,7 +14,20 @@ logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", os.urandom(24))
 
+# Cache for storing common cipher instances
+from functools import lru_cache
+
 # Cryptography Functions
+def normalize_key_aes(key):
+    """Normalize key to valid AES key lengths (16, 24, or 32 bytes)"""
+    if len(key) < 16:
+        return key.ljust(16, '0').encode('utf-8')
+    elif len(key) > 16 and len(key) < 24:
+        return key.ljust(24, '0').encode('utf-8')
+    elif len(key) > 24:
+        return key.ljust(32, '0')[:32].encode('utf-8')
+    return key.encode('utf-8')
+
 def encrypt_aes(message, key):
     """
     Encrypt message using AES-CBC mode
@@ -27,16 +40,7 @@ def encrypt_aes(message, key):
         str: Base64 encoded ciphertext+IV
     """
     try:
-        # Pad the key to 16 bytes (AES-128)
-        if len(key) < 16:
-            key = key.ljust(16, '0')
-        elif len(key) > 16 and len(key) < 24:
-            key = key.ljust(24, '0')  # AES-192
-        elif len(key) > 24:
-            key = key.ljust(32, '0')  # AES-256
-            key = key[:32]  # Truncate if longer
-        
-        key_bytes = key.encode('utf-8')
+        key_bytes = normalize_key_aes(key)
         message_bytes = message.encode('utf-8')
         
         # Generate random IV
@@ -68,16 +72,7 @@ def decrypt_aes(ciphertext_b64, key):
         str: Decrypted plain text
     """
     try:
-        # Pad the key to 16, 24, or 32 bytes
-        if len(key) < 16:
-            key = key.ljust(16, '0')
-        elif len(key) > 16 and len(key) < 24:
-            key = key.ljust(24, '0')
-        elif len(key) > 24:
-            key = key.ljust(32, '0')
-            key = key[:32]  # Truncate if longer
-        
-        key_bytes = key.encode('utf-8')
+        key_bytes = normalize_key_aes(key)
         
         # Decode base64
         ciphertext_with_iv = base64.b64decode(ciphertext_b64)
